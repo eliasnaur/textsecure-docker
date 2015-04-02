@@ -10,8 +10,6 @@
 
 FROM ubuntu:14.10
 
-MAINTAINER Jani Monoses <jani@ubuntu.com>
-
 RUN DEBIAN_FRONTEND='noninteractive' apt-get update && apt-get install -y redis-server postgresql openjdk-7-jre-headless supervisor
 
 RUN adduser --disabled-password --quiet --gecos Whisper whisper
@@ -25,6 +23,9 @@ RUN /etc/init.d/postgresql start && \
  sudo -u postgres createdb -O whisper accountdb && \
  sudo -u postgres createdb -O whisper messagedb
 
-EXPOSE 8080 8081
+RUN keytool -genkey -noprompt -dname "CN=None, OU=None, O=None, L=None, S=None, C=None" \
+		-keyalg RSA -alias keystore -keystore /keystore.jks -storepass password -keypass password -validity 36000 -keysize 2048
+
+EXPOSE 8443
 
 CMD ./run-server
