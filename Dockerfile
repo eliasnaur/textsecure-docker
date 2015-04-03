@@ -23,8 +23,7 @@ RUN /etc/init.d/postgresql start && \
  sudo -u postgres createdb -O whisper accountdb && \
  sudo -u postgres createdb -O whisper messagedb
 
-RUN keytool -genkey -noprompt -dname "CN=None, OU=None, O=None, L=None, S=None, C=None" \
-		-keyalg RSA -alias keystore -keystore /keystore.jks -storepass password -keypass password -validity 36000 -keysize 2048
+COPY keystore.jks /keystore.jks
 
 EXPOSE 8443
 
